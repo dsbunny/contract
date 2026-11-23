@@ -1,0 +1,52 @@
+{
+	"name": "@dsbunny/contract",
+	"version": "1.0.0",
+	"description": "Typed HTTP contracts for Melanie services",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"license": "MIT",
+	"private": false,
+	"scripts": {
+		"build": "tsc",
+		"clean": "rm -rf dist node_modules package-lock.json",
+		"pull:upstream": "./scripts/pull-upstream.sh",
+		"rebuild": "npm run clean && npm run pull:upstream && npm install && npm run build",
+		"test": "node --test test/*.test.mjs"
+	},
+	"devDependencies": {
+		"@dsbunny/canvasdb-schema": "github:dsbunny/canvasdb-schema#0a9cf93",
+		"@dsbunny/capdb-schema": "github:dsbunny/capdb-schema#1b76768",
+		"@dsbunny/dam-schema": "github:dsbunny/dam-schema#fc33b23",
+		"@dsbunny/enclave-schema": "github:dsbunny/enclave-schema#8cb8d51",
+		"@dsbunny/error-schema": "github:dsbunny/error-schema#9f22488",
+		"@dsbunny/publisher-schema": "github:dsbunny/publisher-schema#a1e030d",
+		"@dsbunny/recipedb-schema": "github:dsbunny/recipedb-schema#76ee200",
+		"@dsbunny/rmm-schema": "github:dsbunny/rmm-schema#86e59bd",
+		"@dsbunny/transcoder-one-schema": "github:dsbunny/transcoder-one-schema#2aaaff7",
+		"@dsbunny/transcoder-three-schema": "github:dsbunny/transcoder-three-schema#b4597b6",
+		"@dsbunny/viewport-agent-schema": "github:dsbunny/viewport-agent-schema#e5e0b57",
+		"typescript": "^5.9.3",
+		"zod": "^4.3.6",
+		"@dsbunny/zod-registry": "github:dsbunny/zod-registry#0873db4"
+	},
+	"peerDependencies": {
+		"@dsbunny/canvasdb-schema": "github:dsbunny/canvasdb-schema",
+		"@dsbunny/capdb-schema": "github:dsbunny/capdb-schema",
+		"@dsbunny/dam-schema": "github:dsbunny/dam-schema",
+		"@dsbunny/enclave-schema": "github:dsbunny/enclave-schema",
+		"@dsbunny/error-schema": "github:dsbunny/error-schema",
+		"@dsbunny/publisher-schema": "github:dsbunny/publisher-schema",
+		"@dsbunny/recipedb-schema": "github:dsbunny/recipedb-schema",
+		"@dsbunny/rmm-schema": "github:dsbunny/rmm-schema",
+		"@dsbunny/transcoder-one-schema": "github:dsbunny/transcoder-one-schema",
+		"@dsbunny/transcoder-three-schema": "github:dsbunny/transcoder-three-schema",
+		"@dsbunny/viewport-agent-schema": "github:dsbunny/viewport-agent-schema",
+		"@orpc/contract": "^1.16.5",
+		"zod": "^4.3.0",
+		"@dsbunny/zod-registry": "github:dsbunny/zod-registry"
+	},
+	"dependencies": {
+		"@orpc/contract": "^1.16.5"
+	}
+}
