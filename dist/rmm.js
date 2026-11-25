@@ -46,7 +46,7 @@ function defineContract(options) {
             return {
                 ...current,
                 security: name === 'ping' ? [] : group === 'rmmAdmin'
-                    ? [{ OpenIDConnect: [options.method === 'GET' ? 'api:read' : 'api:write'] }]
+                    ? [{ OAuth2ClientCredentials: [options.method === 'GET' ? 'api:read' : 'api:write'] }]
                     : eventStream ? [{ QueryToken: [] }] : [{ DeviceBearer: [] }],
                 responses,
             };

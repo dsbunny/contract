@@ -1,7 +1,7 @@
 // vim: tabstop=8 softtabstop=0 noexpandtab shiftwidth=8 nosmarttab
 import { oc } from '@orpc/contract';
 import * as z from 'zod';
-import { RecipeDbRecipeIdParamsSchema, PlaylistIdParamsSchema, RecipeIdQuerySchema, PlaylistIdQuerySchema, ListRecipeInputsQuerySchema, ListRecipesQuerySchema, GetPlaylistSuggestionsQuerySchema, GetPlaylistAvailabilityQuerySchema, ListPlaylistsQuerySchema, CreatePlaylistBodySchema, CreatePlaylistResponseSchema, CreateRecipeBodySchema, CreateRecipeResponseSchema, GetPlaylistAvailabilityResponseSchema, GetPlaylistResponseSchema, GetPlaylistSuggestionsResponseSchema, GetRecipeInputResponseSchema, GetRecipeLinkResponseSchema, GetRecipeResponseSchema, ListPlaylistsResponseSchema, ListRecipeInputsResponseSchema, ListRecipesResponseSchema, PatchPlaylistBodySchema, PatchPlaylistResponseSchema, QueryPlaylistByTemplateBodySchema, QueryPlaylistByTemplateResponseSchema, } from '@dsbunny/recipedb-schema';
+import { RecipeDbRecipeIdParamsSchema, PlaylistIdParamsSchema, ListRecipeInputsQuerySchema, ListRecipesQuerySchema, GetPlaylistSuggestionsQuerySchema, GetPlaylistAvailabilityQuerySchema, ListPlaylistsQuerySchema, CreatePlaylistBodySchema, CreatePlaylistResponseSchema, CreateRecipeBodySchema, CreateRecipeResponseSchema, GetPlaylistAvailabilityResponseSchema, GetPlaylistResponseSchema, GetPlaylistSuggestionsResponseSchema, GetRecipeInputResponseSchema, GetRecipeLinkResponseSchema, GetRecipeResponseSchema, ListPlaylistsResponseSchema, ListRecipeInputsResponseSchema, ListRecipesResponseSchema, PatchPlaylistBodySchema, PatchPlaylistResponseSchema, QueryPlaylistByTemplateBodySchema, QueryPlaylistByTemplateResponseSchema, } from '@dsbunny/recipedb-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
 const error = (code, status, message) => ({ code, status, message });
 const headers = z.object({
@@ -43,7 +43,7 @@ function defineRecipeContract(options) {
         spec: current => ({
             ...current,
             description: 'Requires a tenant:<tenant-id> scope. Array query parameters accept repeated or comma-separated values.',
-            security: [{ OpenIDConnect: [options.scope ?? (options.method === 'GET' ? 'api:read' : 'api:write')] }],
+            security: [{ OAuth2ClientCredentials: [options.scope ?? (options.method === 'GET' ? 'api:read' : 'api:write')] }],
             responses: { ...current.responses, '401': { description: 'Unauthorized' },
                 ...(current.responses?.['403'] ? {} : { '403': { description: 'Forbidden' } }) },
         }),
@@ -52,7 +52,7 @@ function defineRecipeContract(options) {
 export const recipeDbContracts = {
     getRecipe: defineRecipeContract({
         method: 'GET', path: '/api/v1/recipes/{recipe_id}', operationId: 'getRecipe',
-        input: z.object({ headers, params: RecipeDbRecipeIdParamsSchema, query: RecipeIdQuerySchema }), body: GetRecipeResponseSchema, conditional: true,
+        input: z.object({ headers, params: RecipeDbRecipeIdParamsSchema }), body: GetRecipeResponseSchema, conditional: true,
         request: error('E2015', 400, 'Bad request while fetching recipe.'),
         response: error('E2082', 502, 'Bad gateway error while fetching recipe.'),
         defaultError: error('E2012', 500, 'An unexpected error occurred while fetching recipe.'),
@@ -60,7 +60,7 @@ export const recipeDbContracts = {
     }),
     getRecipeLink: defineRecipeContract({
         method: 'GET', path: '/api/v1/recipes/{recipe_id}/link', operationId: 'getRecipeLink',
-        input: z.object({ headers, params: RecipeDbRecipeIdParamsSchema, query: RecipeIdQuerySchema }), body: GetRecipeLinkResponseSchema, conditional: true,
+        input: z.object({ headers, params: RecipeDbRecipeIdParamsSchema }), body: GetRecipeLinkResponseSchema, conditional: true,
         request: error('E2020', 400, 'Invalid recipe ID while fetching recipe link.'),
         response: error('E2083', 502, 'Bad gateway error while fetching recipe link.'),
         defaultError: error('E2025', 500, 'An unexpected error occurred while fetching the recipe link.'),
@@ -68,7 +68,7 @@ export const recipeDbContracts = {
     }),
     getRecipeInput: defineRecipeContract({
         method: 'GET', path: '/api/v1/recipes/{recipe_id}/input', operationId: 'getRecipeInput',
-        input: z.object({ headers, params: RecipeDbRecipeIdParamsSchema, query: RecipeIdQuerySchema }), body: GetRecipeInputResponseSchema, conditional: true,
+        input: z.object({ headers, params: RecipeDbRecipeIdParamsSchema }), body: GetRecipeInputResponseSchema, conditional: true,
         request: error('E2037', 400, 'Invalid recipe ID while fetching recipe input.'),
         response: error('E2084', 502, 'Bad gateway error while fetching recipe input.'),
         defaultError: error('E2040', 500, 'An unexpected error occurred while fetching recipe input.'),
@@ -116,7 +116,7 @@ export const recipeDbContracts = {
     }),
     getPlaylist: defineRecipeContract({
         method: 'GET', path: '/api/v1/playlists/{playlist_id}', operationId: 'getPlaylist',
-        input: z.object({ headers, params: PlaylistIdParamsSchema, query: PlaylistIdQuerySchema }), body: GetPlaylistResponseSchema, conditional: true,
+        input: z.object({ headers, params: PlaylistIdParamsSchema }), body: GetPlaylistResponseSchema, conditional: true,
         request: error('E2045', 400, 'Invalid playlist identifier.'),
         response: error('E2090', 502, 'Bad gateway error while fetching playlist.'),
         defaultError: error('E2048', 500, 'An unexpected error occurred while fetching the playlist.'),
@@ -124,7 +124,7 @@ export const recipeDbContracts = {
     }),
     patchPlaylist: defineRecipeContract({
         method: 'PATCH', path: '/api/v1/playlists/{playlist_id}', operationId: 'patchPlaylist',
-        input: z.object({ headers, params: PlaylistIdParamsSchema, query: PlaylistIdQuerySchema, body: PatchPlaylistBodySchema }), body: PatchPlaylistResponseSchema,
+        input: z.object({ headers, params: PlaylistIdParamsSchema, body: PatchPlaylistBodySchema }), body: PatchPlaylistResponseSchema,
         request: error('E2049', 400, 'Invalid playlist patch request.'),
         response: error('E2091', 502, 'Bad gateway error while updating playlist.'),
         defaultError: error('E2052', 500, 'An unexpected error occurred while updating the playlist.'),
@@ -132,7 +132,7 @@ export const recipeDbContracts = {
     }),
     deletePlaylist: defineRecipeContract({
         method: 'DELETE', path: '/api/v1/playlists/{playlist_id}', operationId: 'deletePlaylist', status: 204,
-        input: z.object({ headers, params: PlaylistIdParamsSchema, query: PlaylistIdQuerySchema }), body: z.void(),
+        input: z.object({ headers, params: PlaylistIdParamsSchema }), body: z.void(),
         request: error('E2053', 400, 'Invalid playlist identifier.'),
         response: error('E2092', 502, 'Bad gateway error while deleting playlist.'),
         defaultError: error('E2056', 500, 'An unexpected error occurred while deleting the playlist.'),

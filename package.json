@@ -21,7 +21,7 @@
 		"@dsbunny/enclave-schema": "github:dsbunny/enclave-schema#8cb8d51",
 		"@dsbunny/error-schema": "github:dsbunny/error-schema#9f22488",
 		"@dsbunny/publisher-schema": "github:dsbunny/publisher-schema#a1e030d",
-		"@dsbunny/recipedb-schema": "github:dsbunny/recipedb-schema#76ee200",
+		"@dsbunny/recipedb-schema": "github:dsbunny/recipedb-schema#eae9530",
 		"@dsbunny/rmm-schema": "github:dsbunny/rmm-schema#86e59bd",
 		"@dsbunny/transcoder-one-schema": "github:dsbunny/transcoder-one-schema#2aaaff7",
 		"@dsbunny/transcoder-three-schema": "github:dsbunny/transcoder-three-schema#b4597b6",

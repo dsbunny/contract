@@ -16,9 +16,6 @@ export declare const recipeDbContracts: {
         params: z.ZodObject<{
             recipe_id: z.ZodString;
         }, z.core.$strip>;
-        query: z.ZodObject<{
-            recipe_id: z.ZodCodec<z.ZodUnion<readonly [z.ZodString, z.ZodArray<z.ZodString>]>, z.ZodArray<z.ZodString>>;
-        }, z.core.$strip>;
     }, z.core.$strip>, z.ZodObject<{
         status: z.ZodLiteral<204>;
     }, z.core.$strip> | z.ZodObject<{
@@ -887,9 +884,6 @@ export declare const recipeDbContracts: {
         params: z.ZodObject<{
             recipe_id: z.ZodString;
         }, z.core.$strip>;
-        query: z.ZodObject<{
-            recipe_id: z.ZodCodec<z.ZodUnion<readonly [z.ZodString, z.ZodArray<z.ZodString>]>, z.ZodArray<z.ZodString>>;
-        }, z.core.$strip>;
     }, z.core.$strip>, z.ZodObject<{
         status: z.ZodLiteral<204>;
     }, z.core.$strip> | z.ZodObject<{
@@ -966,9 +960,6 @@ export declare const recipeDbContracts: {
         params: z.ZodObject<{
             recipe_id: z.ZodString;
         }, z.core.$strip>;
-        query: z.ZodObject<{
-            recipe_id: z.ZodCodec<z.ZodUnion<readonly [z.ZodString, z.ZodArray<z.ZodString>]>, z.ZodArray<z.ZodString>>;
-        }, z.core.$strip>;
     }, z.core.$strip>, z.ZodObject<{
         status: z.ZodLiteral<204>;
     }, z.core.$strip> | z.ZodObject<{
@@ -981,9 +972,11 @@ export declare const recipeDbContracts: {
                 publish_id: z.ZodUUID;
                 publisher_identity: z.ZodString;
                 canvas_viewports: z.ZodArray<z.ZodObject<{
-                    "@type": z.ZodLiteral<"CanvasViewport">;
                     canvas_id: z.ZodUUID;
                     viewport_ids: z.ZodArray<z.ZodString>;
+                    "@type": z.ZodLiteral<"CanvasViewportRecord">;
+                    is_active: z.ZodBoolean;
+                    is_latest: z.ZodBoolean;
                 }, z.core.$strip>>;
                 playlist_ids: z.ZodArray<z.ZodUUID>;
                 asset_ids: z.ZodArray<z.ZodUUID>;
@@ -1381,9 +1374,11 @@ export declare const recipeDbContracts: {
                 publish_id: z.ZodUUID;
                 publisher_identity: z.ZodString;
                 canvas_viewports: z.ZodArray<z.ZodObject<{
-                    "@type": z.ZodLiteral<"CanvasViewport">;
                     canvas_id: z.ZodUUID;
                     viewport_ids: z.ZodArray<z.ZodString>;
+                    "@type": z.ZodLiteral<"CanvasViewportRecord">;
+                    is_active: z.ZodBoolean;
+                    is_latest: z.ZodBoolean;
                 }, z.core.$strip>>;
                 playlist_ids: z.ZodArray<z.ZodUUID>;
                 asset_ids: z.ZodArray<z.ZodUUID>;
@@ -1823,9 +1818,11 @@ export declare const recipeDbContracts: {
                 publish_id: z.ZodUUID;
                 publisher_identity: z.ZodString;
                 canvas_viewports: z.ZodArray<z.ZodObject<{
-                    "@type": z.ZodLiteral<"CanvasViewport">;
                     canvas_id: z.ZodUUID;
                     viewport_ids: z.ZodArray<z.ZodString>;
+                    "@type": z.ZodLiteral<"CanvasViewportRecord">;
+                    is_active: z.ZodBoolean;
+                    is_latest: z.ZodBoolean;
                 }, z.core.$strip>>;
                 playlist_ids: z.ZodArray<z.ZodUUID>;
                 asset_ids: z.ZodArray<z.ZodUUID>;
@@ -2224,9 +2221,11 @@ export declare const recipeDbContracts: {
                 publish_id: z.ZodUUID;
                 publisher_identity: z.ZodString;
                 canvas_viewports: z.ZodArray<z.ZodObject<{
-                    "@type": z.ZodLiteral<"CanvasViewport">;
                     canvas_id: z.ZodUUID;
                     viewport_ids: z.ZodArray<z.ZodString>;
+                    "@type": z.ZodLiteral<"CanvasViewportRecord">;
+                    is_active: z.ZodBoolean;
+                    is_latest: z.ZodBoolean;
                 }, z.core.$strip>>;
                 playlist_ids: z.ZodArray<z.ZodUUID>;
                 asset_ids: z.ZodArray<z.ZodUUID>;
@@ -3894,7 +3893,7 @@ export declare const recipeDbContracts: {
                 publish_id: z.ZodUUID;
                 publisher_identity: z.ZodString;
                 canvas_viewports: z.ZodArray<z.ZodObject<{
-                    "@type": z.ZodLiteral<"CanvasViewport">;
+                    "@type": z.ZodLiteral<"CanvasViewportInput">;
                     canvas_id: z.ZodUUID;
                     viewport_ids: z.ZodArray<z.ZodString>;
                 }, z.core.$strip>>;
@@ -4077,9 +4076,6 @@ export declare const recipeDbContracts: {
         params: z.ZodObject<{
             playlist_id: z.ZodString;
         }, z.core.$strip>;
-        query: z.ZodObject<{
-            playlist_id: z.ZodArray<z.ZodString>;
-        }, z.core.$strip>;
     }, z.core.$strip>, z.ZodObject<{
         status: z.ZodLiteral<204>;
     }, z.core.$strip> | z.ZodObject<{
@@ -4192,8 +4188,10 @@ export declare const recipeDbContracts: {
                 }, z.core.$strip>]>>;
                 "@type": z.ZodLiteral<"PlaylistRecord">;
                 tenant_id: z.ZodUUID;
+                is_active: z.ZodBoolean;
                 create_timestamp: z.ZodISODateTime;
                 modify_timestamp: z.ZodISODateTime;
+                expiry_timestamp: z.ZodNullable<z.ZodISODateTime>;
             }, z.core.$strip>;
         }, z.core.$strip>;
     }, z.core.$strip> | z.ZodUnion<readonly [z.ZodObject<{
@@ -4308,8 +4306,10 @@ export declare const recipeDbContracts: {
                 }, z.core.$strip>]>>;
                 "@type": z.ZodLiteral<"PlaylistRecord">;
                 tenant_id: z.ZodUUID;
+                is_active: z.ZodBoolean;
                 create_timestamp: z.ZodISODateTime;
                 modify_timestamp: z.ZodISODateTime;
+                expiry_timestamp: z.ZodNullable<z.ZodISODateTime>;
             }, z.core.$strip>;
         }, z.core.$strip>;
     }, z.core.$strip>, z.ZodObject<{
@@ -4343,9 +4343,6 @@ export declare const recipeDbContracts: {
         }, z.core.$strip>>;
         params: z.ZodObject<{
             playlist_id: z.ZodString;
-        }, z.core.$strip>;
-        query: z.ZodObject<{
-            playlist_id: z.ZodArray<z.ZodString>;
         }, z.core.$strip>;
         body: z.ZodObject<{
             '@type': z.ZodLiteral<"PatchPlaylistRequest">;
@@ -4487,8 +4484,10 @@ export declare const recipeDbContracts: {
                 }, z.core.$strip>]>>;
                 "@type": z.ZodLiteral<"PlaylistRecord">;
                 tenant_id: z.ZodUUID;
+                is_active: z.ZodBoolean;
                 create_timestamp: z.ZodISODateTime;
                 modify_timestamp: z.ZodISODateTime;
+                expiry_timestamp: z.ZodNullable<z.ZodISODateTime>;
             }, z.core.$strip>;
         }, z.core.$strip>;
     }, z.core.$strip> | z.ZodUnion<readonly [z.ZodObject<{
@@ -4603,8 +4602,10 @@ export declare const recipeDbContracts: {
                 }, z.core.$strip>]>>;
                 "@type": z.ZodLiteral<"PlaylistRecord">;
                 tenant_id: z.ZodUUID;
+                is_active: z.ZodBoolean;
                 create_timestamp: z.ZodISODateTime;
                 modify_timestamp: z.ZodISODateTime;
+                expiry_timestamp: z.ZodNullable<z.ZodISODateTime>;
             }, z.core.$strip>;
         }, z.core.$strip>;
     }, z.core.$strip>, z.ZodObject<{
@@ -4638,9 +4639,6 @@ export declare const recipeDbContracts: {
         }, z.core.$strip>>;
         params: z.ZodObject<{
             playlist_id: z.ZodString;
-        }, z.core.$strip>;
-        query: z.ZodObject<{
-            playlist_id: z.ZodArray<z.ZodString>;
         }, z.core.$strip>;
     }, z.core.$strip>, z.ZodObject<{
         status: z.ZodLiteral<204>;
@@ -4803,8 +4801,10 @@ export declare const recipeDbContracts: {
                 }, z.core.$strip>]>>;
                 "@type": z.ZodLiteral<"PlaylistRecord">;
                 tenant_id: z.ZodUUID;
+                is_active: z.ZodBoolean;
                 create_timestamp: z.ZodISODateTime;
                 modify_timestamp: z.ZodISODateTime;
+                expiry_timestamp: z.ZodNullable<z.ZodISODateTime>;
             }, z.core.$strip>>;
             next_token: z.ZodNullable<z.ZodString>;
         }, z.core.$strip>;
@@ -4920,8 +4920,10 @@ export declare const recipeDbContracts: {
                 }, z.core.$strip>]>>;
                 "@type": z.ZodLiteral<"PlaylistRecord">;
                 tenant_id: z.ZodUUID;
+                is_active: z.ZodBoolean;
                 create_timestamp: z.ZodISODateTime;
                 modify_timestamp: z.ZodISODateTime;
+                expiry_timestamp: z.ZodNullable<z.ZodISODateTime>;
             }, z.core.$strip>>;
             next_token: z.ZodNullable<z.ZodString>;
         }, z.core.$strip>;

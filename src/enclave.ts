@@ -49,7 +49,7 @@ function defineEnclaveContract<TInput extends z.ZodType, TBody extends z.ZodType
 		successStatus: options.status, inputStructure: 'detailed', outputStructure: 'detailed',
 		spec: current => options.authenticated ? {
 			...current,
-			security: [{ Bearer: [] }],
+			security: [{ OAuth2ClientCredentials: ['api:write'] }],
 			description: 'Requires the api:write and tenant scopes.',
 			responses: {
 				...current.responses,

@@ -38,7 +38,7 @@ function defineContract(options) {
         spec: current => ({
             ...current,
             description: 'Requires a tenant:<tenant-id> scope. Array query parameters accept repeated or comma-separated values.',
-            security: [{ OpenIDConnect: [options.method === 'GET' ? 'api:read' : 'api:write'] }],
+            security: [{ OAuth2ClientCredentials: [options.method === 'GET' ? 'api:read' : 'api:write'] }],
             responses: { ...current.responses, '401': { description: 'Unauthorized' },
                 ...(current.responses?.['403'] ? {} : { '403': { description: 'Forbidden' } }) },
         }),

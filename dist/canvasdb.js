@@ -65,7 +65,7 @@ function defineCanvasContract(options) {
         outputStructure: 'detailed',
         spec: current => ({
             ...current,
-            security: [{ OpenIDConnect: [options.scope] }],
+            security: [{ OAuth2ClientCredentials: [...options.scopes] }],
             description: 'Requires a tenant:<tenant-id> scope.',
             parameters: current.parameters?.map(parameter => !('$ref' in parameter) && options.operationId === 'getCanvasAvailability' && parameter.name === 'name'
                 ? { ...parameter, required: false }
@@ -82,7 +82,7 @@ function defineCanvasContract(options) {
 export const canvasDbContracts = {
     list: defineCanvasContract({
         method: 'GET', path: '/api/v1/canvases', operationId: 'listCanvases', summary: 'List canvases.',
-        scope: 'api:read', status: 200, input: z.object({ headers, query: ListCanvasesQuerySchema }),
+        scopes: ['api:read'], status: 200, input: z.object({ headers, query: ListCanvasesQuerySchema }),
         output: output(ListCanvasesResponseSchema, 200, true),
         requestError: error('E2077', 400, 'Bad request while listing canvases'),
         defaultError: error('E2007', 500, 'An unexpected error occurred while fetching the canvases.'),
@@ -95,7 +95,7 @@ export const canvasDbContracts = {
     }),
     suggest: defineCanvasContract({
         method: 'GET', path: '/api/v3/canvases/suggest', operationId: 'suggestCanvases', summary: 'Get canvas suggestions.',
-        scope: 'api:read', status: 200, input: z.object({ query: GetCanvasSuggestionsQuerySchema }),
+        scopes: ['api:read'], status: 200, input: z.object({ query: GetCanvasSuggestionsQuerySchema }),
         output: output(GetCanvasSuggestionsResponseSchema, 200),
         requestError: error(suggestCode, 400, 'Bad request while retrieving canvas suggestions'),
         defaultError: error(suggestCode, 500, 'An error occurred while retrieving canvas suggestions'),
@@ -107,7 +107,7 @@ export const canvasDbContracts = {
     }),
     availability: defineCanvasContract({
         method: 'GET', path: '/api/v1/canvases/availability', operationId: 'getCanvasAvailability', summary: 'Check canvas name availability.',
-        scope: 'api:read', status: 200, input: z.object({ query: GetCanvasAvailabilityQuerySchema }),
+        scopes: ['api:read'], status: 200, input: z.object({ query: GetCanvasAvailabilityQuerySchema }),
         output: output(GetCanvasAvailabilityResponseSchema, 200),
         requestError: availabilityRequest,
         defaultError: error('E2031', 500, 'An unexpected error occurred while checking canvas name availability.'),
@@ -119,7 +119,7 @@ export const canvasDbContracts = {
     }),
     get: defineCanvasContract({
         method: 'GET', path: '/api/v1/canvases/{canvasId}', operationId: 'getCanvas', summary: 'Get a canvas.',
-        scope: 'api:read', status: 200, input: z.object({ headers, params: CanvasIdParamsSchema }),
+        scopes: ['api:read'], status: 200, input: z.object({ headers, params: CanvasIdParamsSchema }),
         output: output(GetCanvasResponseSchema, 200, true),
         requestError: error('E2078', 400, 'Bad request while fetching canvas'),
         defaultError: error('E2012', 500, 'An unexpected error occurred while fetching the canvas.'),
@@ -135,7 +135,7 @@ export const canvasDbContracts = {
     }),
     delete: defineCanvasContract({
         method: 'DELETE', path: '/api/v1/canvases/{canvasId}', operationId: 'deleteCanvas', summary: 'Delete a canvas.',
-        scope: 'api:write', status: 204, input: z.object({ headers, params: CanvasIdParamsSchema }),
+        scopes: ['api:write'], status: 204, input: z.object({ headers, params: CanvasIdParamsSchema }),
         output: output(z.void(), 204),
         requestError: error('E2027', 400, 'Bad request while deleting canvas'),
         defaultError: error('E2014', 500, 'An unexpected error occurred while deleting the canvas.'),
@@ -151,7 +151,7 @@ export const canvasDbContracts = {
     }),
     patch: defineCanvasContract({
         method: 'PATCH', path: '/api/v1/canvases/{canvasId}', operationId: 'patchCanvas', summary: 'Patch a canvas.',
-        scope: 'api:write', status: 200, input: z.object({ headers, params: CanvasIdParamsSchema, body: PatchCanvasBodySchema }),
+        scopes: ['api:write'], status: 200, input: z.object({ headers, params: CanvasIdParamsSchema, body: PatchCanvasBodySchema }),
         output: output(PatchCanvasResponseSchema, 200),
         requestError: error('E2021', 400, 'Bad request while patching canvas'),
         defaultError: error('E2009', 500, 'An unexpected error occurred while updating the canvas.'),
@@ -167,7 +167,7 @@ export const canvasDbContracts = {
     }),
     create: defineCanvasContract({
         method: 'POST', path: '/api/v1/canvases', operationId: 'createCanvas', summary: 'Register a canvas.',
-        scope: 'api:write', status: 201, input: z.object({ body: CreateCanvasBodySchema }),
+        scopes: ['api:write'], status: 201, input: z.object({ body: CreateCanvasBodySchema }),
         output: output(CreateCanvasResponseSchema, 201),
         requestError: error('E2001', 400, 'Invalid request body'),
         defaultError: error('E2002', 500, 'An unexpected error occurred while registering the canvas.'),

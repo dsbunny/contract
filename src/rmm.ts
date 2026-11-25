@@ -61,7 +61,7 @@ function defineContract<TRequest extends z.ZodType, TResponse extends z.ZodType>
 			return {
 				...current,
 				security: name === 'ping' ? [] : group === 'rmmAdmin'
-					? [{ OpenIDConnect: [options.method === 'GET' ? 'api:read' : 'api:write'] }]
+					? [{ OAuth2ClientCredentials: [options.method === 'GET' ? 'api:read' : 'api:write'] }]
 					: eventStream ? [{ QueryToken: [] }] : [{ DeviceBearer: [] }],
 				responses,
 			};

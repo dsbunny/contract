@@ -25,7 +25,7 @@ function definePublisherContract(options) {
         successStatus: status, inputStructure: 'detailed', outputStructure: 'detailed',
         spec: current => ({
             ...current,
-            security: [{ OpenIDConnect: [options.method === 'GET' ? 'api:read' : 'api:write'] }],
+            security: [{ OAuth2ClientCredentials: [options.method === 'GET' ? 'api:read' : 'api:write'] }],
             description: [
                 ...(options.tenant ? ['Requires a tenant:<tenant-id> scope.'] : []),
                 ...(options.operationId === 'getJobs' ? ['Job IDs may be repeated or comma-separated.'] : []),
