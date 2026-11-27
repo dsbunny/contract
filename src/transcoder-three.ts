@@ -4,11 +4,13 @@ import * as z from 'zod';
 import {
 	GetJobStatusQuerySchema,
 	CreateTranscodeImageBodySchema, CreateTranscodeVideoBodySchema,
-	CreateTranscodeResponseSchema, GetJobStatusResponseSchema,
+	CreateTranscodeResponseSchema, GetJobStatusResponseSchema, TranscoderThreePingResponseSchema,
 } from '@dsbunny/transcoder-three-schema';
 import { defineTranscoderContract, transcoderError as error } from './transcoder.js';
+import { definePingContract } from './ping.js';
 
 export const transcoderThreeContracts = {
+	ping: definePingContract(TranscoderThreePingResponseSchema, 'E2121'),
 	getJobs: defineTranscoderContract({
 		errorPrefix: 'TranscoderThree',
 		method: 'GET', path: '/api/v1/job', operationId: 'getJobs',

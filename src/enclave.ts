@@ -8,11 +8,10 @@ import {
 	RevokeTokenBodySchema, RevokeTokenResponseSchema,
 } from '@dsbunny/enclave-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { definePingContract } from './ping.js';
 
 type Definition = { code: string; status: number; message: string };
 const errors = {
-	pingGateway: { code: 'E2010', status: 502, message: 'Invalid response while pinging the server' },
-	pingDefault: { code: 'E2009', status: 500, message: 'An unexpected error occurred while pinging the server.' },
 	addGateway: { code: 'E2011', status: 502, message: 'Invalid response while adding the token' },
 	addRequest: { code: 'E2001', status: 400, message: 'Invalid request body' },
 	addValidation: { code: 'E2012', status: 500, message: 'Internal validation error while adding the token' },
@@ -64,11 +63,7 @@ function defineEnclaveContract<TInput extends z.ZodType, TBody extends z.ZodType
 }
 
 export const enclaveContracts = {
-	ping: defineEnclaveContract({
-		method: 'GET', path: '/api/v1/ping', operationId: 'ping',
-		input: z.object({}), body: EnclavePingResponseSchema, status: 200,
-		defaultError: errors.pingDefault, byName: { EnclaveBadGatewayError: errors.pingGateway },
-	}),
+	ping: definePingContract(EnclavePingResponseSchema, 'E2009'),
 	addToken: defineEnclaveContract({
 		method: 'POST', path: '/api/v1/enclave/tokens', operationId: 'addToken',
 		input: z.object({ body: AddTokenBodySchema }), body: AddTokenResponseSchema, status: 201,

@@ -1,1 +1,1 @@
-{"version":3,"file":"viewport-agent.d.ts","sourceRoot":"","sources":["../src/viewport-agent.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,CAAC,MAAM,KAAK,CAAC;AA6BzB,eAAO,MAAM,sBAAsB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CAoBlC,CAAC"}
+{"version":3,"file":"viewport-agent.d.ts","sourceRoot":"","sources":["../src/viewport-agent.ts"],"names":[],"mappings":"AAGA,OAAO,KAAK,CAAC,MAAM,KAAK,CAAC;AAkCzB,eAAO,MAAM,sBAAsB;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;CAqBlC,CAAC"}

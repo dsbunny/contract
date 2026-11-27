@@ -1574,27 +1574,5 @@ export declare const rmmRouteErrors: {
             };
         };
     };
-    readonly ping: {
-        readonly default: {
-            readonly status: 500;
-            readonly code: "E2065";
-            readonly message: "An unexpected error occurred while pinging the server.";
-        };
-        readonly byName: {
-            readonly RmmBadGatewayError: {
-                readonly status: 502;
-                readonly code: "E3215";
-                readonly message: "Invalid response for GET /api/v1/ping";
-            };
-        };
-        readonly request: {};
-        readonly response: {
-            readonly RmmBadGatewayError: {
-                readonly status: 502;
-                readonly code: "E3215";
-                readonly message: "Invalid response for GET /api/v1/ping";
-            };
-        };
-    };
 };
 //# sourceMappingURL=rmm-errors.d.ts.map

@@ -10,6 +10,8 @@ import {
 	GetAudioCapabiltiesResponseSchema, GetImageCapabiltiesResponseSchema, GetVideoCapabiltiesResponseSchema,
 } from '@dsbunny/capdb-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { definePingContract } from './ping.js';
+import { CapDbPingResponseSchema } from '@dsbunny/capdb-schema';
 
 type Definition = { code: string; status: number; message: string };
 const error = (code: string, status: number, message: string): Definition => ({ code, status, message });
@@ -62,6 +64,7 @@ const headers = z.object({
 }).optional();
 
 export const capDbContracts = {
+	ping: definePingContract(CapDbPingResponseSchema, 'E2037'),
 	createVideo: defineCapDbContract({
 		method: 'POST', path: '/api/v1/capabilities/video', operationId: 'createVideoCapability',
 		input: z.object({ body: CreateVideoCapabilityBodySchema }), body: CreateVideoCapabilityResponseSchema,

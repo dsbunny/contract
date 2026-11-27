@@ -3,7 +3,7 @@ import { oc } from '@orpc/contract';
 import * as z from 'zod';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
 import { damRouteErrors } from './dam-errors.js';
-import { UploadIdParamsSchema, AssetIdParamsSchema, AssetVersionParamsSchema, AssetUploadParamsSchema, GetAssetQuerySchema, PollUploadQuerySchema, ListUploadsQuerySchema, ListAssetsQuerySchema, ListDeletedAssetsQuerySchema, GetAssetSuggestionsQuerySchema, GetAssetAvailabilityQuerySchema, GetAssetDownloadLocationQuerySchema, ListAssetPostersQuerySchema, GetAssetThumbnailQuerySchema, CreateAssetFromUploadQuerySchema, CreateAssetFromUploadVersionQuerySchema, CreateUploadBodySchema, CreateUploadResponseSchema, CreateUploadVersionBodySchema, CreateUploadVersionResponseSchema, CreateUploadUrlBodySchema, CreateUploadUrlResponseSchema, PatchUploadBodySchema, PatchUploadResponseSchema, UploadCompleteBodySchema, UploadCompleteResponseSchema, UploadPartBodySchema, UploadPartResponseSchema, UploadPollResponseSchema, CreateAssetFromUploadBodySchema, CreateAssetFromUploadResponseSchema, CreateAssetFromUploadVersionBodySchema, CreateAssetFromUploadVersionResponseSchema, GetAssetPosterResponseSchema, GetAssetResponseSchema, GetAssetSuggestionsResponseSchema, GetAssetAvailabilityResponseSchema, GetAssetThumbnailResponseSchema, ListAssetPostersResponseSchema, ListAssetsResponseSchema, GetAssetDownloadLocationResponseSchema, RecoverAssetResponseSchema, RecoverAssetBodySchema, PatchAssetResponseSchema, PatchAssetBodySchema, RecreateAssetMetadataBodySchema, RecreateAssetMetadataResponseSchema, RecreateAssetAnimatedPosterBodySchema, RecreateAssetAnimatedPosterResponseSchema, RecreateAssetPosterSeriesBodySchema, RecreateAssetPosterSeriesResponseSchema, RecreateAssetTileSeriesBodySchema, RecreateAssetTileSeriesResponseSchema, RecreateAssetPrevueBodySchema, RecreateAssetPrevueResponseSchema, RecreateAssetPosterBodySchema, RecreateAssetPosterResponseSchema, GetUploadResponseSchema, ListUploadsResponseSchema, } from '@dsbunny/dam-schema';
+import { UploadIdParamsSchema, AssetIdParamsSchema, AssetVersionParamsSchema, AssetUploadParamsSchema, GetAssetQuerySchema, PollUploadQuerySchema, ListUploadsQuerySchema, ListAssetsQuerySchema, ListDeletedAssetsQuerySchema, GetAssetSuggestionsQuerySchema, GetAssetAvailabilityQuerySchema, GetAssetDownloadLocationQuerySchema, ListAssetPostersQuerySchema, GetAssetThumbnailQuerySchema, CreateAssetFromUploadQuerySchema, CreateAssetFromUploadVersionQuerySchema, CreateUploadBodySchema, CreateUploadResponseSchema, CreateUploadVersionBodySchema, CreateUploadVersionResponseSchema, CreateUploadUrlBodySchema, CreateUploadUrlResponseSchema, PatchUploadBodySchema, PatchUploadResponseSchema, UploadCompleteBodySchema, UploadCompleteResponseSchema, UploadPartBodySchema, UploadPartResponseSchema, UploadPollResponseSchema, CreateAssetFromUploadBodySchema, CreateAssetFromUploadResponseSchema, CreateAssetFromUploadVersionBodySchema, CreateAssetFromUploadVersionResponseSchema, GetAssetPosterResponseSchema, GetAssetResponseSchema, GetAssetSuggestionsResponseSchema, GetAssetAvailabilityResponseSchema, GetAssetThumbnailResponseSchema, ListAssetPostersResponseSchema, ListAssetsResponseSchema, GetAssetDownloadLocationResponseSchema, RecoverAssetResponseSchema, RecoverAssetBodySchema, PatchAssetResponseSchema, PatchAssetBodySchema, DamPingResponseSchema, RecreateAssetMetadataBodySchema, RecreateAssetMetadataResponseSchema, RecreateAssetAnimatedPosterBodySchema, RecreateAssetAnimatedPosterResponseSchema, RecreateAssetPosterSeriesBodySchema, RecreateAssetPosterSeriesResponseSchema, RecreateAssetTileSeriesBodySchema, RecreateAssetTileSeriesResponseSchema, RecreateAssetPrevueBodySchema, RecreateAssetPrevueResponseSchema, RecreateAssetPosterBodySchema, RecreateAssetPosterResponseSchema, GetUploadResponseSchema, ListUploadsResponseSchema, } from '@dsbunny/dam-schema';
 const headers = z.object({
     'if-match': z.string().optional(), 'if-none-match': z.string().optional(),
     'if-modified-since': z.string().optional(), 'if-unmodified-since': z.string().optional(),
@@ -34,8 +34,9 @@ function defineContract(options) {
     const output = options.allowNotModified ? z.union([success, z.object({ status: z.literal(304) })]) : success;
     return oc.$meta({ routeErrors }).route({
         method: options.method, path: options.path, operationId: options.operationId, successStatus: status,
+        summary: options.summary,
         inputStructure: 'detailed', outputStructure: 'detailed',
-        spec: current => ({
+        spec: current => options.public ? ({ ...current, security: [] }) : ({
             ...current,
             description: 'Requires a tenant:<tenant-id> scope. Array query parameters accept repeated or comma-separated values.',
             security: [{ OAuth2ClientCredentials: [options.method === 'GET' ? 'api:read' : 'api:write'] }],
@@ -216,6 +217,15 @@ const damRecreateContracts = {
         response: RecreateAssetPrevueResponseSchema,
     }),
 };
-const combinedDamContracts = Object.assign({}, damUploadContracts, damAssetQueryContracts, damAssetContracts, damRecreateContracts);
+const pingContract = defineContract({
+    operationId: 'ping',
+    method: 'GET',
+    path: '/api/v1/ping',
+    request: z.object({}),
+    response: DamPingResponseSchema,
+    public: true,
+    summary: 'Ping the service.',
+});
+const combinedDamContracts = Object.assign({}, { ping: pingContract }, damUploadContracts, damAssetQueryContracts, damAssetContracts, damRecreateContracts);
 export const damContracts = combinedDamContracts;
 //# sourceMappingURL=dam.js.map

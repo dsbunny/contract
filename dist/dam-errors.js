@@ -179,8 +179,15 @@ const definitions = {
     E2219: { code: 'E2219', status: 502, message: "Bad gateway error while retrieving the uploads" },
     E2220: { code: 'E2220', status: 400, message: "Bad request while deleting asset version" },
     E2221: { code: 'E2221', status: 404, message: "Poster not found" },
+    E2222: { code: 'E2222', status: 500, message: "An unexpected error occurred while pinging the server." },
 };
 export const damRouteErrors = {
+    ping: {
+        default: definitions.E2222,
+        request: {},
+        response: {},
+        byName: {},
+    },
     getAsset: {
         default: definitions.E2043,
         request: {

@@ -1,6 +1,62 @@
 import * as z from 'zod';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
 export declare const canvasDbContracts: {
+    ping: import("@orpc/contract").ContractProcedureBuilderWithInputOutput<z.ZodObject<{}, z.core.$strip>, z.ZodObject<{
+        status: z.ZodLiteral<200>;
+        body: z.ZodObject<{
+            ping: z.ZodLiteral<"pong">;
+            timestamp: z.ZodISODateTime;
+        }, z.core.$strip>;
+    }, z.core.$strip>, import("@orpc/contract").MergedErrorMap<Record<never, never>, {
+        [x: string]: {
+            status: number;
+            message: string;
+            data: z.ZodObject<{
+                '@type': z.ZodLiteral<"ErrorResponse">;
+                code: z.ZodString;
+                message: z.ZodString;
+                detail: z.ZodString;
+                timestamp: z.ZodISODateTime;
+            }, z.core.$strip>;
+        };
+    }>, {
+        routeErrors: {
+            default: string;
+            byName: {};
+            response: {
+                default: string;
+                byName: {};
+            };
+        };
+    } & Record<never, never>> & {
+        '~orpc': {
+            inputSchema: z.ZodType;
+            outputSchema: z.ZodType;
+            errorMap: {
+                [x: string]: {
+                    status: number;
+                    message: string;
+                    data: z.ZodObject<{
+                        '@type': z.ZodLiteral<"ErrorResponse">;
+                        code: z.ZodString;
+                        message: z.ZodString;
+                        detail: z.ZodString;
+                        timestamp: z.ZodISODateTime;
+                    }, z.core.$strip>;
+                };
+            };
+            meta: {
+                routeErrors: {
+                    default: string;
+                    byName: {};
+                    response: {
+                        default: string;
+                        byName: {};
+                    };
+                };
+            };
+        };
+    };
     list: import("@orpc/contract").ContractProcedureBuilderWithInputOutput<z.ZodObject<{
         headers: z.ZodOptional<z.ZodObject<{
             'if-match': z.ZodOptional<z.ZodString>;

@@ -1,4 +1,5 @@
 export * from './contract.js';
+export * from './ping.js';
 export * from './canvasdb.js';
 export * from './capdb.js';
 export * from './dam.js';

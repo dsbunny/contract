@@ -2,8 +2,13 @@
 
 import { oc } from '@orpc/contract';
 import * as z from 'zod';
-import { ViewportIdParamsSchema, GetScreenshotResponseSchema } from '@dsbunny/viewport-agent-schema';
+import {
+	ViewportAgentPingResponseSchema,
+	ViewportIdParamsSchema,
+	GetScreenshotResponseSchema,
+} from '@dsbunny/viewport-agent-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { definePingContract } from './ping.js';
 
 const errors = {
 	badGateway: { code: 'E2022', status: 502, message: 'Bad gateway while fetching viewport screenshot' },
@@ -31,6 +36,7 @@ const routeErrors = {
 };
 
 export const viewportAgentContracts = {
+	ping: definePingContract(ViewportAgentPingResponseSchema, 'E2025'),
 	screenshot: oc.$meta({ routeErrors }).route({
 		method: 'GET', path: '/api/v1/viewports/{viewportId}/screenshot',
 		operationId: 'getScreenshot', summary: 'Get a viewport screenshot.',

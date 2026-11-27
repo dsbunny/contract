@@ -3,6 +3,8 @@ import { oc } from '@orpc/contract';
 import * as z from 'zod';
 import { CreateUUIDsQuerySchema, CreatePublishBodySchema, CreatePublishResponseSchema, CreateUUIDsResponseSchema, GetPublishStatusQuerySchema, GetPublishStatusResponseSchema, GetRecipeResponseSchema, PublisherRecipeIdParamsSchema, } from '@dsbunny/publisher-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { PublisherPingResponseSchema } from '@dsbunny/publisher-schema';
+import { definePingContract } from './ping.js';
 const error = (code, status, message) => ({ code, status, message });
 function definePublisherContract(options) {
     const byName = {
@@ -42,6 +44,7 @@ function definePublisherContract(options) {
     })).errors(errorMap);
 }
 export const publisherContracts = {
+    ping: definePingContract(PublisherPingResponseSchema, 'E2116'),
     publish: definePublisherContract({
         method: 'POST', path: '/api/v1/publish', operationId: 'publish',
         input: z.object({ body: CreatePublishBodySchema }), body: CreatePublishResponseSchema, tenant: true,

@@ -14,6 +14,8 @@ import {
 	QueryPlaylistByTemplateResponseSchema,
 } from '@dsbunny/recipedb-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { RecipeDbPingResponseSchema } from '@dsbunny/recipedb-schema';
+import { definePingContract } from './ping.js';
 
 type ErrorDefinition = { code: string; status: number; message: string };
 const error = (code: string, status: number, message: string): ErrorDefinition => ({ code, status, message });
@@ -76,6 +78,7 @@ function defineRecipeContract<TInput extends z.ZodType, TBody extends z.ZodType>
 }
 
 export const recipeDbContracts = {
+	ping: definePingContract(RecipeDbPingResponseSchema, 'E2106'),
 	getRecipe: defineRecipeContract({
 		method: 'GET', path: '/api/v1/recipes/{recipe_id}', operationId: 'getRecipe',
 		input: z.object({ headers, params: RecipeDbRecipeIdParamsSchema }), body: GetRecipeResponseSchema, conditional: true,

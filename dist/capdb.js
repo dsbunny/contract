@@ -3,6 +3,8 @@ import { oc } from '@orpc/contract';
 import * as z from 'zod';
 import { ListCapabilitiesQuerySchema, CreateAudioCapabilityBodySchema, CreateAudioCapabilityResponseSchema, CreateImageCapabilityBodySchema, CreateImageCapabilityResponseSchema, CreateVideoCapabilityBodySchema, CreateVideoCapabilityResponseSchema, GetAudioCapabiltiesResponseSchema, GetImageCapabiltiesResponseSchema, GetVideoCapabiltiesResponseSchema, } from '@dsbunny/capdb-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { definePingContract } from './ping.js';
+import { CapDbPingResponseSchema } from '@dsbunny/capdb-schema';
 const error = (code, status, message) => ({ code, status, message });
 function defineCapDbContract(options) {
     const byName = {
@@ -39,6 +41,7 @@ const headers = z.object({
     'if-modified-since': z.string().optional(), 'if-unmodified-since': z.string().optional(),
 }).optional();
 export const capDbContracts = {
+    ping: definePingContract(CapDbPingResponseSchema, 'E2037'),
     createVideo: defineCapDbContract({
         method: 'POST', path: '/api/v1/capabilities/video', operationId: 'createVideoCapability',
         input: z.object({ body: CreateVideoCapabilityBodySchema }), body: CreateVideoCapabilityResponseSchema,

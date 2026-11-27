@@ -8,6 +8,8 @@ import {
 	GetRecipeResponseSchema, PublisherRecipeIdParamsSchema,
 } from '@dsbunny/publisher-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { PublisherPingResponseSchema } from '@dsbunny/publisher-schema';
+import { definePingContract } from './ping.js';
 
 type Definition = { code: string; status: number; message: string };
 const error = (code: string, status: number, message: string): Definition => ({ code, status, message });
@@ -62,6 +64,7 @@ function definePublisherContract<TInput extends z.ZodType, TBody extends z.ZodTy
 }
 
 export const publisherContracts = {
+	ping: definePingContract(PublisherPingResponseSchema, 'E2116'),
 	publish: definePublisherContract({
 		method: 'POST', path: '/api/v1/publish', operationId: 'publish',
 		input: z.object({ body: CreatePublishBodySchema }), body: CreatePublishResponseSchema, tenant: true,

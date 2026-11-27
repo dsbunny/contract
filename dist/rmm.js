@@ -4,6 +4,7 @@ import * as z from 'zod';
 import * as Rmm from '@dsbunny/rmm-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
 import { rmmAdminRouteErrors, rmmDeviceUpdateNotImplemented, rmmRouteErrors } from './rmm-errors.js';
+import { definePingContract } from './ping.js';
 const headers = z.object({
     'if-match': z.string().optional(), 'if-none-match': z.string().optional(),
     'if-modified-since': z.string().optional(), 'if-unmodified-since': z.string().optional(),
@@ -39,13 +40,14 @@ function defineContract(options) {
             const responses = {
                 ...current.responses,
                 ...(eventStream ? { '200': { description: 'Server-sent events', content: { 'text/event-stream': { schema: { type: 'string' } } } } } : {}),
-                ...(name === 'ping' ? {} : { '401': { description: 'Unauthorized' }, ...(current.responses?.['403'] ? {} : { '403': { description: 'Forbidden' } }) }),
+                '401': { description: 'Unauthorized' },
+                ...(current.responses?.['403'] ? {} : { '403': { description: 'Forbidden' } }),
             };
             if (options.name === 'rmmAdmin.updateDevice')
                 delete responses['200'];
             return {
                 ...current,
-                security: name === 'ping' ? [] : group === 'rmmAdmin'
+                security: group === 'rmmAdmin'
                     ? [{ OAuth2ClientCredentials: [options.method === 'GET' ? 'api:read' : 'api:write'] }]
                     : eventStream ? [{ QueryToken: [] }] : [{ DeviceBearer: [] }],
                 responses,
@@ -53,7 +55,9 @@ function defineContract(options) {
         },
     }).input(options.request).output(output).errors(errorMap);
 }
+const pingContract = definePingContract(Rmm.RmmPingResponseSchema, 'E2065');
 export const rmmAdminContracts = {
+    ping: pingContract,
     listAgents: defineContract({
         name: 'rmmAdmin.listAgents', method: 'GET', path: '/api/v1/agents',
         request: z.object({ headers, query: Rmm.ListAgentsQuerySchema }),
@@ -181,11 +185,7 @@ export const rmmAdminContracts = {
     }),
 };
 export const rmmContracts = {
-    ping: defineContract({
-        name: 'rmm.ping', method: 'GET', path: '/api/v1/ping',
-        request: z.object({ headers }),
-        response: Rmm.RmmPingResponseSchema,
-    }),
+    ping: pingContract,
     registerDevice: defineContract({
         name: 'rmm.registerDevice', method: 'POST', path: '/api/v1/devices',
         request: z.object({ headers, body: Rmm.CreateDeviceBodySchema }),

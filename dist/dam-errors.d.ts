@@ -1,4 +1,14 @@
 export declare const damRouteErrors: {
+    ping: {
+        default: {
+            code: string;
+            status: number;
+            message: string;
+        };
+        request: {};
+        response: {};
+        byName: {};
+    };
     getAsset: {
         default: {
             code: string;

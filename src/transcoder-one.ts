@@ -5,11 +5,13 @@ import {
 	GetJobStatusQuerySchema,
 	CreateTranscodeFileBodySchema, CreateTranscodeImageBodySchema,
 	CreateTranscodeTextureBodySchema, CreateTranscodeVideoBodySchema,
-	CreateTranscodeResponseSchema, GetJobStatusResponseSchema,
+	CreateTranscodeResponseSchema, GetJobStatusResponseSchema, TranscoderOnePingResponseSchema,
 } from '@dsbunny/transcoder-one-schema';
 import { defineTranscoderContract, transcoderError as error } from './transcoder.js';
+import { definePingContract } from './ping.js';
 
 export const transcoderOneContracts = {
+	ping: definePingContract(TranscoderOnePingResponseSchema, 'E2125'),
 	getJobs: defineTranscoderContract({
 		errorPrefix: 'TranscoderOne',
 		method: 'GET', path: '/api/v1/job', operationId: 'getJobs',

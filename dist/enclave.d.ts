@@ -1,13 +1,13 @@
 import * as z from 'zod';
 export declare const enclaveContracts: {
     ping: import("@orpc/contract").ContractProcedureBuilderWithInputOutput<z.ZodObject<{}, z.core.$strip>, z.ZodObject<{
-        status: z.ZodLiteral<200 | 201>;
+        status: z.ZodLiteral<200>;
         body: z.ZodObject<{
             ping: z.ZodLiteral<"pong">;
             timestamp: z.ZodISODateTime;
         }, z.core.$strip>;
     }, z.core.$strip>, import("@orpc/contract").MergedErrorMap<Record<never, never>, {
-        [k: string]: {
+        [x: string]: {
             status: number;
             message: string;
             data: z.ZodObject<{
@@ -21,11 +21,41 @@ export declare const enclaveContracts: {
     }>, {
         routeErrors: {
             default: string;
-            byName: {
-                [k: string]: string;
+            byName: {};
+            response: {
+                default: string;
+                byName: {};
             };
         };
-    } & Record<never, never>>;
+    } & Record<never, never>> & {
+        '~orpc': {
+            inputSchema: z.ZodType;
+            outputSchema: z.ZodType;
+            errorMap: {
+                [x: string]: {
+                    status: number;
+                    message: string;
+                    data: z.ZodObject<{
+                        '@type': z.ZodLiteral<"ErrorResponse">;
+                        code: z.ZodString;
+                        message: z.ZodString;
+                        detail: z.ZodString;
+                        timestamp: z.ZodISODateTime;
+                    }, z.core.$strip>;
+                };
+            };
+            meta: {
+                routeErrors: {
+                    default: string;
+                    byName: {};
+                    response: {
+                        default: string;
+                        byName: {};
+                    };
+                };
+            };
+        };
+    };
     addToken: import("@orpc/contract").ContractProcedureBuilderWithInputOutput<z.ZodObject<{
         body: z.ZodObject<{
             '@type': z.ZodLiteral<"AddTokenRequest">;

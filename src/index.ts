@@ -1,6 +1,7 @@
 // vim: tabstop=8 softtabstop=0 noexpandtab shiftwidth=8 nosmarttab
 
 export * from './contract.js';
+export * from './ping.js';
 export * from './canvasdb.js';
 export * from './capdb.js';
 export * from './dam.js';

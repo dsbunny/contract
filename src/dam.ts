@@ -21,6 +21,7 @@ import {
 	ListAssetsResponseSchema, GetAssetDownloadLocationResponseSchema,
 	RecoverAssetResponseSchema, RecoverAssetBodySchema, PatchAssetResponseSchema,
 	PatchAssetBodySchema,
+	DamPingResponseSchema,
 	RecreateAssetMetadataBodySchema, RecreateAssetMetadataResponseSchema,
 	RecreateAssetAnimatedPosterBodySchema, RecreateAssetAnimatedPosterResponseSchema,
 	RecreateAssetPosterSeriesBodySchema, RecreateAssetPosterSeriesResponseSchema,
@@ -49,6 +50,8 @@ function defineContract<TRequest extends z.ZodType, TResponse extends z.ZodType>
 	request: TRequest;
 	response: TResponse;
 	allowNotModified?: boolean;
+	public?: boolean;
+	summary?: string;
 }): ContractProcedure<TRequest, z.ZodType<{ status: number; body?: z.output<TResponse> }>,
 	Record<string, { code: string; status: number; message: string; data: typeof ErrorResponseSchema }>,
 	{ routeErrors: { default: string; byName: Record<string, string>; request: { default: string; byName: Record<string, string> }; response: { default: string; byName: Record<string, string> } } }> {
@@ -71,8 +74,9 @@ function defineContract<TRequest extends z.ZodType, TResponse extends z.ZodType>
 	const output = options.allowNotModified ? z.union([success, z.object({ status: z.literal(304) })]) : success;
 	return oc.$meta({ routeErrors }).route({
 		method: options.method, path: options.path, operationId: options.operationId, successStatus: status,
+		summary: options.summary,
 		inputStructure: 'detailed', outputStructure: 'detailed',
-		spec: current => ({
+		spec: current => options.public ? ({ ...current, security: [] }) : ({
 			...current,
 			description: 'Requires a tenant:<tenant-id> scope. Array query parameters accept repeated or comma-separated values.',
 			security: [{ OAuth2ClientCredentials: [options.method === 'GET' ? 'api:read' : 'api:write'] }],
@@ -271,11 +275,22 @@ const damRecreateContracts = {
 	}),
 };
 
+const pingContract = defineContract({
+	operationId: 'ping',
+	method: 'GET',
+	path: '/api/v1/ping',
+	request: z.object({}),
+	response: DamPingResponseSchema,
+	public: true,
+	summary: 'Ping the service.',
+});
 const combinedDamContracts: typeof damUploadContracts
 	& typeof damAssetQueryContracts
 	& typeof damAssetContracts
-	& typeof damRecreateContracts = Object.assign(
+	& typeof damRecreateContracts
+	& { ping: typeof pingContract } = Object.assign(
 	{},
+	{ ping: pingContract },
 	damUploadContracts,
 	damAssetQueryContracts,
 	damAssetContracts,

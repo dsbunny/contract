@@ -244,8 +244,6 @@ const errors = {
 	E3213: { status: 502, code: 'E3213', message: 'Invalid response for PATCH /api/v1/devices/runtime-status' },
 	E3142: { status: 400, code: 'E3142', message: 'Invalid request for PATCH /api/v1/devices/runtime-status' },
 	E3212: { status: 400, code: 'E3212', message: 'Invalid device runtime status patch request' },
-	E2065: { status: 500, code: 'E2065', message: 'An unexpected error occurred while pinging the server.' },
-	E3215: { status: 502, code: 'E3215', message: 'Invalid response for GET /api/v1/ping' },
 } as const;
 
 export const rmmAdminRouteErrors = {
@@ -728,16 +726,6 @@ export const rmmRouteErrors = {
 		},
 		response: {
 			RmmBadGatewayError: errors.E3213,
-		},
-	},
-	ping: {
-		default: errors.E2065,
-		byName: {
-			RmmBadGatewayError: errors.E3215,
-		},
-		request: {},
-		response: {
-			RmmBadGatewayError: errors.E3215,
 		},
 	},
 } as const;

@@ -3,6 +3,62 @@ import * as z from 'zod';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
 export declare const rmmEventDataSchema: z.ZodString;
 export declare const rmmAdminContracts: {
+    ping: import("@orpc/contract").ContractProcedureBuilderWithInputOutput<z.ZodObject<{}, z.core.$strip>, z.ZodObject<{
+        status: z.ZodLiteral<200>;
+        body: z.ZodObject<{
+            ping: z.ZodLiteral<"pong">;
+            timestamp: z.ZodISODateTime;
+        }, z.core.$strip>;
+    }, z.core.$strip>, import("@orpc/contract").MergedErrorMap<Record<never, never>, {
+        [x: string]: {
+            status: number;
+            message: string;
+            data: z.ZodObject<{
+                '@type': z.ZodLiteral<"ErrorResponse">;
+                code: z.ZodString;
+                message: z.ZodString;
+                detail: z.ZodString;
+                timestamp: z.ZodISODateTime;
+            }, z.core.$strip>;
+        };
+    }>, {
+        routeErrors: {
+            default: string;
+            byName: {};
+            response: {
+                default: string;
+                byName: {};
+            };
+        };
+    } & Record<never, never>> & {
+        '~orpc': {
+            inputSchema: z.ZodType;
+            outputSchema: z.ZodType;
+            errorMap: {
+                [x: string]: {
+                    status: number;
+                    message: string;
+                    data: z.ZodObject<{
+                        '@type': z.ZodLiteral<"ErrorResponse">;
+                        code: z.ZodString;
+                        message: z.ZodString;
+                        detail: z.ZodString;
+                        timestamp: z.ZodISODateTime;
+                    }, z.core.$strip>;
+                };
+            };
+            meta: {
+                routeErrors: {
+                    default: string;
+                    byName: {};
+                    response: {
+                        default: string;
+                        byName: {};
+                    };
+                };
+            };
+        };
+    };
     listAgents: ContractProcedure<z.ZodObject<{
         headers: z.ZodOptional<z.ZodObject<{
             'if-match': z.ZodOptional<z.ZodString>;
@@ -2611,44 +2667,62 @@ export declare const rmmAdminContracts: {
     }>;
 };
 export declare const rmmContracts: {
-    ping: ContractProcedure<z.ZodObject<{
-        headers: z.ZodOptional<z.ZodObject<{
-            'if-match': z.ZodOptional<z.ZodString>;
-            'if-none-match': z.ZodOptional<z.ZodString>;
-            'if-modified-since': z.ZodOptional<z.ZodString>;
-            'if-unmodified-since': z.ZodOptional<z.ZodString>;
-        }, z.core.$strip>>;
-    }, z.core.$strip>, z.ZodType<{
-        status: number;
-        body?: {
-            ping: "pong";
-            timestamp: string;
-        } | undefined;
-    }, unknown, z.core.$ZodTypeInternals<{
-        status: number;
-        body?: {
-            ping: "pong";
-            timestamp: string;
-        } | undefined;
-    }, unknown>>, Record<string, {
-        code: string;
-        status: number;
-        message: string;
-        data: typeof ErrorResponseSchema;
+    ping: import("@orpc/contract").ContractProcedureBuilderWithInputOutput<z.ZodObject<{}, z.core.$strip>, z.ZodObject<{
+        status: z.ZodLiteral<200>;
+        body: z.ZodObject<{
+            ping: z.ZodLiteral<"pong">;
+            timestamp: z.ZodISODateTime;
+        }, z.core.$strip>;
+    }, z.core.$strip>, import("@orpc/contract").MergedErrorMap<Record<never, never>, {
+        [x: string]: {
+            status: number;
+            message: string;
+            data: z.ZodObject<{
+                '@type': z.ZodLiteral<"ErrorResponse">;
+                code: z.ZodString;
+                message: z.ZodString;
+                detail: z.ZodString;
+                timestamp: z.ZodISODateTime;
+            }, z.core.$strip>;
+        };
     }>, {
         routeErrors: {
             default: string;
-            byName: Record<string, string>;
-            request: {
-                default: string;
-                byName: Record<string, string>;
-            };
+            byName: {};
             response: {
                 default: string;
-                byName: Record<string, string>;
+                byName: {};
             };
         };
-    }>;
+    } & Record<never, never>> & {
+        '~orpc': {
+            inputSchema: z.ZodType;
+            outputSchema: z.ZodType;
+            errorMap: {
+                [x: string]: {
+                    status: number;
+                    message: string;
+                    data: z.ZodObject<{
+                        '@type': z.ZodLiteral<"ErrorResponse">;
+                        code: z.ZodString;
+                        message: z.ZodString;
+                        detail: z.ZodString;
+                        timestamp: z.ZodISODateTime;
+                    }, z.core.$strip>;
+                };
+            };
+            meta: {
+                routeErrors: {
+                    default: string;
+                    byName: {};
+                    response: {
+                        default: string;
+                        byName: {};
+                    };
+                };
+            };
+        };
+    };
     registerDevice: ContractProcedure<z.ZodObject<{
         headers: z.ZodOptional<z.ZodObject<{
             'if-match': z.ZodOptional<z.ZodString>;

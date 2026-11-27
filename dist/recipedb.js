@@ -3,6 +3,8 @@ import { oc } from '@orpc/contract';
 import * as z from 'zod';
 import { RecipeDbRecipeIdParamsSchema, PlaylistIdParamsSchema, ListRecipeInputsQuerySchema, ListRecipesQuerySchema, GetPlaylistSuggestionsQuerySchema, GetPlaylistAvailabilityQuerySchema, ListPlaylistsQuerySchema, CreatePlaylistBodySchema, CreatePlaylistResponseSchema, CreateRecipeBodySchema, CreateRecipeResponseSchema, GetPlaylistAvailabilityResponseSchema, GetPlaylistResponseSchema, GetPlaylistSuggestionsResponseSchema, GetRecipeInputResponseSchema, GetRecipeLinkResponseSchema, GetRecipeResponseSchema, ListPlaylistsResponseSchema, ListRecipeInputsResponseSchema, ListRecipesResponseSchema, PatchPlaylistBodySchema, PatchPlaylistResponseSchema, QueryPlaylistByTemplateBodySchema, QueryPlaylistByTemplateResponseSchema, } from '@dsbunny/recipedb-schema';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { RecipeDbPingResponseSchema } from '@dsbunny/recipedb-schema';
+import { definePingContract } from './ping.js';
 const error = (code, status, message) => ({ code, status, message });
 const headers = z.object({
     'if-match': z.string().optional(), 'if-none-match': z.string().optional(),
@@ -50,6 +52,7 @@ function defineRecipeContract(options) {
     }).input(options.input).output(output).errors(errorMap);
 }
 export const recipeDbContracts = {
+    ping: definePingContract(RecipeDbPingResponseSchema, 'E2106'),
     getRecipe: defineRecipeContract({
         method: 'GET', path: '/api/v1/recipes/{recipe_id}', operationId: 'getRecipe',
         input: z.object({ headers, params: RecipeDbRecipeIdParamsSchema }), body: GetRecipeResponseSchema, conditional: true,

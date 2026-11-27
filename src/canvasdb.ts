@@ -3,9 +3,11 @@
 import { oc } from '@orpc/contract';
 import * as z from 'zod';
 import { ErrorResponseSchema } from '@dsbunny/error-schema';
+import { definePingContract } from './ping.js';
 import {
 	CanvasIdParamsSchema,
 	CreateCanvasBodySchema, CreateCanvasResponseSchema,
+	CanvasDbPingResponseSchema,
 	GetCanvasAvailabilityQuerySchema, GetCanvasSuggestionsQuerySchema,
 	GetCanvasAvailabilityResponseSchema, GetCanvasResponseSchema, GetCanvasSuggestionsResponseSchema,
 	ListCanvasesQuerySchema, ListCanvasesResponseSchema, PatchCanvasBodySchema, PatchCanvasResponseSchema,
@@ -110,6 +112,7 @@ function defineCanvasContract<TInput extends z.ZodType, TOutput extends z.ZodTyp
 }
 
 export const canvasDbContracts = {
+	ping: definePingContract(CanvasDbPingResponseSchema, 'E2094'),
 	list: defineCanvasContract({
 		method: 'GET', path: '/api/v1/canvases', operationId: 'listCanvases', summary: 'List canvases.',
 		scopes: ['api:read'], status: 200, input: z.object({ headers, query: ListCanvasesQuerySchema }),

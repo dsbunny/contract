@@ -1,8 +1,10 @@
 // vim: tabstop=8 softtabstop=0 noexpandtab shiftwidth=8 nosmarttab
 import * as z from 'zod';
-import { GetJobStatusQuerySchema, CreateTranscodeFileBodySchema, CreateTranscodeImageBodySchema, CreateTranscodeTextureBodySchema, CreateTranscodeVideoBodySchema, CreateTranscodeResponseSchema, GetJobStatusResponseSchema, } from '@dsbunny/transcoder-one-schema';
+import { GetJobStatusQuerySchema, CreateTranscodeFileBodySchema, CreateTranscodeImageBodySchema, CreateTranscodeTextureBodySchema, CreateTranscodeVideoBodySchema, CreateTranscodeResponseSchema, GetJobStatusResponseSchema, TranscoderOnePingResponseSchema, } from '@dsbunny/transcoder-one-schema';
 import { defineTranscoderContract, transcoderError as error } from './transcoder.js';
+import { definePingContract } from './ping.js';
 export const transcoderOneContracts = {
+    ping: definePingContract(TranscoderOnePingResponseSchema, 'E2125'),
     getJobs: defineTranscoderContract({
         errorPrefix: 'TranscoderOne',
         method: 'GET', path: '/api/v1/job', operationId: 'getJobs',

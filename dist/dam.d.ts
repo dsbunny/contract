@@ -36105,7 +36105,40 @@ declare const damRecreateContracts: {
         };
     }>;
 };
-declare const combinedDamContracts: typeof damUploadContracts & typeof damAssetQueryContracts & typeof damAssetContracts & typeof damRecreateContracts;
+declare const pingContract: ContractProcedure<z.ZodObject<{}, z.core.$strip>, z.ZodType<{
+    status: number;
+    body?: {
+        ping: "pong";
+        timestamp: string;
+    } | undefined;
+}, unknown, z.core.$ZodTypeInternals<{
+    status: number;
+    body?: {
+        ping: "pong";
+        timestamp: string;
+    } | undefined;
+}, unknown>>, Record<string, {
+    code: string;
+    status: number;
+    message: string;
+    data: typeof ErrorResponseSchema;
+}>, {
+    routeErrors: {
+        default: string;
+        byName: Record<string, string>;
+        request: {
+            default: string;
+            byName: Record<string, string>;
+        };
+        response: {
+            default: string;
+            byName: Record<string, string>;
+        };
+    };
+}>;
+declare const combinedDamContracts: typeof damUploadContracts & typeof damAssetQueryContracts & typeof damAssetContracts & typeof damRecreateContracts & {
+    ping: typeof pingContract;
+};
 export declare const damContracts: typeof combinedDamContracts;
 export {};
 //# sourceMappingURL=dam.d.ts.map
